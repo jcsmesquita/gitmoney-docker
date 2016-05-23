@@ -1,0 +1,23 @@
+version: '2'
+services:
+  bitgo-express:
+    container_name: bitgo-express
+    build: bitgo-express
+    image: jcsmesquita/bitgo-express
+    working_dir: /root/bitgo-express
+    command: ./bin/bitgo-express --debug --port 3080 --env test --bind 0.0.0.0
+    # environment:
+    #   NODE_ENV: development
+    ports:
+      - "3080:3080"
+  git-money:
+    container_name: git-money
+    build: git-money
+    image: jcsmesquita/git-money
+    working_dir: /root/git-money
+    env_file:
+      - ./gitmoney.env
+    # Keep the container running for debugging purposes
+    command: tail -f /dev/null
+    links:
+      - bitgo-express
